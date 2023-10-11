@@ -1,0 +1,21 @@
+name: Deploy to Firebase
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: npm ci
+    - name: Build
+      run: npm run build  # This assumes you have a build script in your package.json. Modify accordingly.
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
